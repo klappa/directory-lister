@@ -18,7 +18,7 @@
     "build": "tsc",
     "cli": "node dist/cli.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "build"
+    "prepublish": "yarn build"
   },
   "devDependencies": {
     "@types/node": "^13.7.4",
