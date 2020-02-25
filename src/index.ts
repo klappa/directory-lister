@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import { join, resolve } from 'https://deno.land/std/path/mod.ts';
+const { readDirSync, writeFileSync } = Deno;
 
 type FileType = 'file' | 'folder';
 
@@ -9,7 +9,7 @@ type FileEntry = {
 };
 
 const createParentLink = (parent: string, index: number, parents: string[]) => {
-  const newUrl = path.join(
+  const newUrl = join(
     ...['../'.repeat(parents.length - index), 'index.html'].filter(Boolean)
   );
   return ` <a href="${newUrl}">${index === 0 ? 'root' : parent}/</a>`;
@@ -208,17 +208,19 @@ export const createDirListing = ({
   parents?: string[];
   name?: string;
 }) => {
-  const entries = fs.readdirSync(rootDir);
+  const entries = readDirSync(rootDir);
   const dirs: string[] = [];
   const files: FileEntry[] = [];
-  entries.forEach(name => {
-    const stats = fs.lstatSync(path.resolve(rootDir, name));
-    if (stats.isDirectory()) {
-      dirs.push(name);
-      files.push({ type: 'folder', name });
-    }
-    if (stats.isFile() && name !== 'index.html') {
-      files.push({ type: 'file', name });
+  entries.forEach(file => {
+    if (file.name) {
+
+      if (file.isDirectory()) {
+        dirs.push(file.name);
+        files.push({ type: 'folder', name: file.name });
+      }
+      if (file.isFile() && file.name !== 'index.html') {
+        files.push({ type: 'file', name: file.name });
+      }
     }
   });
 
@@ -227,11 +229,15 @@ export const createDirListing = ({
     name,
     parents,
   });
-  fs.writeFileSync(path.resolve(rootDir, 'index.html'), htmlContent);
+
+  const encoder = new TextEncoder();
+  const data = encoder.encode(htmlContent);
+
+  writeFileSync(resolve(rootDir, 'index.html'), data);
 
   dirs.forEach(dir => {
     createDirListing({
-      rootDir: path.resolve(rootDir, dir),
+      rootDir: resolve(rootDir, dir),
       parents: [...parents, name],
       name: dir,
     });

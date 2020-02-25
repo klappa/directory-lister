@@ -1,7 +1,8 @@
-#!/usr/bin/env node
+#!/usr/bin/env deno --allow-write --allow-read
 
-import { createDirListing } from './index';
+import { createDirListing } from './index.ts';
 
-const [rootDir] = process.argv.slice(2);
+const [rootDir] = Deno.args;
+
 
 createDirListing({ rootDir });
