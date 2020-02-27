@@ -3,20 +3,20 @@
   "version": "1.0.0",
   "license": "MIT",
   "author": "Carl Rosell <me@carlrosell.com>",
-  "main": "dist/index.js",
+  "main": "dist/wrapper.node.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/klappa/directory-lister.git"
   },
   "bin": {
-    "directory-lister": "dist/cli.js"
+    "directory-lister": "dist/cli.node.js"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsc",
-    "cli": "node dist/cli.js",
+    "cli": "node dist/cli.node.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "yarn build"
   },
