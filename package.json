@@ -21,7 +21,7 @@
     "prepublish": "yarn build"
   },
   "devDependencies": {
-    "@types/node": "^13.7.4",
+    "@types/node": "^14.0.0",
     "typescript": "^3.8.2"
   },
   "prettier": {
